@@ -1,6 +1,7 @@
 [general]
 listen_address = "127.0.0.1:3008"
 log_file = "/var/log/orcus/orcus.log"
+log_level = "info"
 sync_interval = "10m"
 ssl_skip_verify = true
 http_timeout = "5s"

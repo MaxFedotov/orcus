@@ -33,6 +33,7 @@ Usage of orcus:
 [general]
 listen_address = "127.0.0.1:3008"      # Address where Orcus HTTP should listen for connections
 log_file = "/var/log/orcus/orcus.log"  # Path to Orcus log file
+log_level = "info"                     # Log level (debug|info)
 sync_interval = "10m"                  # Interval between scheduled sync to Consul
 ssl_skip_verify = true                 # Ignore SSL certification error when using SSL
 http_timeout = "5s"                    # Timeout for HTTP connections to Orchestrator and Consul

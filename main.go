@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/BurntSushi/toml"
 	"github.com/gorilla/mux"
@@ -35,14 +36,19 @@ func main() {
 	}
 
 	log.SetLevel(log.InfoLevel)
-	if *debug {
-		log.SetLevel(log.DebugLevel)
-	}
 	cancelCh := make(chan struct{})
 	config := NewConfig()
 
 	if _, err := toml.DecodeFile(*configFile, &config); err != nil {
 		log.WithField("config", *configFile).Fatal("Unable to read configuration file")
+	}
+
+	if strings.ToLower(config.General.LogLevel) == "debug" {
+		*debug = true
+	}
+
+	if *debug {
+		log.SetLevel(log.DebugLevel)
 	}
 
 	if config.General.LogFile != "" {

@@ -28,6 +28,7 @@ type Config struct {
 type GeneralConfig struct {
 	ListenAddress string   `toml:"listen_address"`
 	LogFile       string   `toml:"log_file"`
+	LogLevel      string   `toml:"log_level"`
 	SyncInterval  Duration `toml:"sync_interval"`
 	SSLSkipVerify bool     `toml:"ssl_skip_verify"`
 	HTTPTimeout   Duration `toml:"http_timeout"`
@@ -55,6 +56,7 @@ func NewConfig() *Config {
 		General: GeneralConfig{
 			ListenAddress: "127.0.0.1:3008",
 			LogFile:       "/var/log/orcus/orcus.log",
+			LogLevel:      "info",
 			SyncInterval: Duration{
 				10 * time.Minute,
 			},
