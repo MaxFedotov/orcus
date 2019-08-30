@@ -1,0 +1,19 @@
+[Unit]
+Description=Orcus: orchestrator to consul synchronization tool
+Documentation=https://github.com/MaxFedotov/orcus
+After=syslog.target 
+After=network.target
+
+[Service]
+User=orcus
+Group=orcus
+Type=simple
+ExecStart=/usr/bin/orcus
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+RestartSec=60s
+
+
+[Install]
+WantedBy=multi-user.target

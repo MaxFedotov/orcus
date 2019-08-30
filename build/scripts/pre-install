@@ -1,0 +1,5 @@
+getent group orcus >/dev/null || groupadd -r orcus
+getent passwd orcus >/dev/null || \
+    useradd -r -g orcus -s /sbin/nologin \
+    -c "Orcus synchronization tool" orcus
+exit 0
