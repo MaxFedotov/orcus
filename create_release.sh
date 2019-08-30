@@ -46,8 +46,8 @@ echo "NEW"
 echo "version: $new_version, tag: $new_tag"
 
 echo "Checking for release notes for version $new_version"
-if [ ! -f /release-notes/$new_version.md ]; then
-    echo "Release notes file /release-notes/$new_version.md not found. Exiting"
+if [ ! -f docs/release-notes/$new_version.md ]; then
+    echo "Release notes file docs/release-notes/$new_version.md not found. Exiting"
     exit 0
 fi
 
@@ -55,10 +55,12 @@ echo "Updating VERSION file"
 echo "$new_version" > VERSION
 
 echo "Creating packages for release"
+rm -rf build/release/
+mkdir build/release/
 . build.sh -t linux -P
 
 echo "Commiting changes"
-git add VERSION /release-notes/$new_version.md
+git add VERSION docs/release-notes/$new_version.md
 git commit -m "Creating release $new_version"
 
 echo "Creating new tag $new_tag"
@@ -70,7 +72,7 @@ git push origin $new_tag
 
 echo "Publishing release"
 release_files=$(find build/release -name '*.deb' -o -name '*.rpm' -o -name '*.tar.gz' | while read line; do echo -a $line; done | paste -s -d' ' -)
-hub create -o -F /release-notes/$new_version.md $new_tag $release_files
+hub release create -o -F docs/release-notes/$new_version.md $new_tag $release_files
 
 
 
