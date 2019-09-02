@@ -14,6 +14,9 @@ Orchestrator to Consul Synchronization tool
 go get github.com/MaxFedotov/orcus
 ```
 
+## Puppet
+[puppet-orcus](https://github.com/MaxFedotov/puppet-orcus) module can be used in order to automate Orcus installation and configuration
+
 ## Install notes
 To provide high availability for Orcus, it should be installed on the same hosts where Orchestrator is installed. Before performing sync process it will check, if current host is Orchestrator leader using Orchestrator API, and if not - it will sleep till next sync interval. It also uses Consul distributed locks as additional way to provide mutually exclusive access to Consul KV for single Orcus instance.
 
@@ -61,3 +64,4 @@ In order to update replicas information in Consul after Orchestrator failover ad
       "curl -X GET localhost:3008/sync/{failureClusterAlias} &"
     ],
 ```
+
