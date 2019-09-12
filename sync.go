@@ -15,11 +15,16 @@ import (
 )
 
 type Metrics struct {
-	LastSyncTime        time.Time
-	LastSyncTS          int64
-	SyncDurationSeconds float64
-	SyncedClusters      uint64
-	SyncErrors          uint64
+	LastSyncTime             time.Time
+	LastSyncTS               int64
+	LastSyncClusters         uint64
+	LastSyncErrors           uint64
+	LastSyncDurationSeconds  float64
+	TotalSyncClusters        uint64
+	TotalSyncErrors          uint64
+	TotalSyncCount           uint64
+	TotalSyncDurationSeconds float64
+	AVGSyncDurationSeconds   float64
 	sync.RWMutex
 }
 
@@ -59,9 +64,14 @@ func Sync(config *Config, clusterName string, consulKV *ConsulKV, cancelCh <-cha
 			SyncMetrics.Lock()
 			SyncMetrics.LastSyncTime = finished
 			SyncMetrics.LastSyncTS = finished.Unix()
-			SyncMetrics.SyncDurationSeconds = finished.Sub(started).Seconds()
-			SyncMetrics.SyncedClusters = syncedClusters
-			SyncMetrics.SyncErrors = syncErrors
+			SyncMetrics.LastSyncClusters = syncedClusters
+			SyncMetrics.LastSyncErrors = syncErrors
+			SyncMetrics.LastSyncDurationSeconds = finished.Sub(started).Seconds()
+			SyncMetrics.TotalSyncClusters += syncedClusters
+			SyncMetrics.TotalSyncErrors += syncErrors
+			SyncMetrics.TotalSyncDurationSeconds += finished.Sub(started).Seconds()
+			SyncMetrics.TotalSyncCount++
+			SyncMetrics.AVGSyncDurationSeconds = SyncMetrics.TotalSyncDurationSeconds / float64(SyncMetrics.TotalSyncCount)
 			SyncMetrics.Unlock()
 		}(started)
 
