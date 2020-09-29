@@ -53,7 +53,9 @@ func GetReplicas(orchestratorURL string, clusterName string) (string, error) {
 	}
 	for _, replica := range replicasData {
 		if replica["MasterKey"].(map[string]interface{})["Hostname"].(string) != "" {
-			replicas = append(replicas, replica["Key"].(map[string]interface{})["Hostname"].(string))
+			if int(replica["ReplicationSQLThreadState"].(float64)) == 1 && int(replica["ReplicationIOThreadState"].(float64)) == 1 {
+				replicas = append(replicas, replica["Key"].(map[string]interface{})["Hostname"].(string))
+			}
 		}
 	}
 	sort.Strings(replicas)
